@@ -1,6 +1,7 @@
 <?php
 
 include 'credentials/PBBCredentials.php';
+echo "Inside Loop\n";
 
 
 /* Get the biggest id from Redshift  */
@@ -11,12 +12,14 @@ $connect = pg_connect($PBBModifyCredentials);
 
 
 $maxRSdate = '1/1/1900';
-while  ( strtotime("$maxRSdate") < strtotime("2012-01-01"))
+$enddate =date("Y-m-d");    //Current Date
+while  ( strtotime("$maxRSdate") < strtotime($enddate))
 {
-    $output = shell_exec('php runscript.php');
-    echo "\n\n$output\n\n";
+     passthru ('php runscript.php 2>&1');
+    //echo "\n\n$output\n\n";
 
-    $sql="select nvl(max(edit_date),'2010-01-01') from contact;";
+
+    $sql="select nvl(max(edit_date),'2001-01-01') from contact;";
     $result2 = pg_query($connect, $sql);
 
        while ($row = pg_fetch_array($result2)) {
@@ -31,7 +34,7 @@ while  ( strtotime("$maxRSdate") < strtotime("2012-01-01"))
 
     echo "\n\nCurrent MaxRSDate:$maxRSdate\n\n";
     echo "\n\nCurrent minRSid:$minRSid\n\n";
-    sleep(1);
+    //usleep(500000);
 
 }
 

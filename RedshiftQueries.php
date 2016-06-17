@@ -82,7 +82,7 @@ select id::int
        , case when lead_date <> '0000-00-00' then lead_date::date else null end	   
        , payment_method
        , puppy_id
-       , case when date_sold <> '0000-00-00' then date_sold::timestamp else null end	   
+       , case when date_sold <> '0000-00-00 00:00:00' then date_sold::timestamp else null end	   
        , deposit
        , puppy_price
 	   , case when preferred_flight_date <> '0000-00-00' then preferred_flight_date::date else null end
@@ -216,15 +216,19 @@ select id::int
        , breeder_id::int
        , two_dog_contact_id::int
        , account_audited::int
-from contact_staging;";
+from contact_staging
+where id::int not in (select id from contact);";
 
 if ($debug==1)
 {
 echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
 }
+//$rowsaffected=1;
+//while ($rowsaffected > 0) {
 $rec = pg_query($connect,$sql);
 $rowsaffected=pg_affected_rows($rec);
 echo "Rows affected $rowsaffected \n\n";
+//}
 
 
 
