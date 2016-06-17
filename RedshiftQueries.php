@@ -6,7 +6,7 @@ echo "\n\n*******Running RedshiftQueries.php*************\n\n";
 include 'credentials/PBBCredentials.php';
 $connect = pg_connect($PBBModifyCredentials);
 
-$sql="truncate table contact_staging;";
+$sql="delete contact_staging;";
 
 if ($debug==1)
 {
@@ -73,16 +73,16 @@ select id::int
        , breeder_name
        , breeder_phone
        , rabies_given
-       , puppy_birthdate::date
-       , rabies_date::date
-       , first_name
+       , case when puppy_birthdate <> '0000-00-00' then puppy_birthdate::date else null end	   
+       , case when rabies_date <> '0000-00-00' then rabies_date::date else null end	   
+	   , first_name
        , last_name
        , relationship_to_buyer
        , purchased_nuvet
-       , lead_date::date
+       , case when lead_date <> '0000-00-00' then lead_date::date else null end	   
        , payment_method
        , puppy_id
-       , date_sold::timestamp
+       , case when date_sold <> '0000-00-00' then date_sold::timestamp else null end	   
        , deposit
        , puppy_price
 	   , case when preferred_flight_date <> '0000-00-00' then preferred_flight_date::date else null end
@@ -90,7 +90,7 @@ select id::int
        , airport_choice_2
        , additional_specifications
        , airport
-       , actual_flight_date::date
+	   , case when actual_flight_date <> '0000-00-00' then actual_flight_date::date else null end	   
        , flight_air_waybill
        , sms_opt_in
        , flight_confirmation
@@ -115,23 +115,23 @@ select id::int
        , b_gender
        , b_puppy_id::int
        , first_vac
-       , first_vac_date::date
+	   , case when first_vac_date <> '0000-00-00' then first_vac_date::date else null end	   	   
        , second_vac
-       , second_vac_date::date
+	   , case when second_vac_date <> '0000-00-00' then second_vac_date::date else null end	   	   
        , third_vac
-       , third_vac_date::date
-       , first_dewormer
-       , first_wormer_date::date
+	   , case when third_vac_date <> '0000-00-00' then third_vac_date::date else null end	   	   
+	   , first_dewormer
+	   , case when first_wormer_date <> '0000-00-00' then first_wormer_date::date else null end	   	   
        , second_dewormer
-       , second_wormer_date::date
+	   , case when second_wormer_date <> '0000-00-00' then second_wormer_date::date else null end	   	   
        , third_dewormer
-       , third_wormer_date::date
+	   , case when third_wormer_date <> '0000-00-00' then third_wormer_date::date else null end	   	   
        , forth_dewormer
-       , forth_wormer_date::date
+	   , case when forth_wormer_date <> '0000-00-00' then forth_wormer_date::date else null end	   	   
        , vaccination_notes
        , referring_domain
-       , create_date::date
-       , edit_date::date
+	   , case when create_date <> '0000-00-00' then create_date::date else null end	   	   
+	   , case when edit_date <> '0000-00-00' then edit_date::date else null end	   	   
        , email_login
        , heart_murmur
        , undescended_testicles
@@ -147,7 +147,7 @@ select id::int
        , breeder_shipping_cost
        , breeder_payment_due
        , breeder_reimbursement
-       , breeder_plans_to_ship_date::date
+	   , case when breeder_plans_to_ship_date <> '0000-00-00' then breeder_plans_to_ship_date::date else null end	   	   
        , first_name_2
        , last_name_2
        , discount
@@ -165,7 +165,7 @@ select id::int
        , b_puppy_name
        , breeder_extra_cost
        , work_phone_ext
-       , departure_date::date
+	   , case when departure_date <> '0000-00-00' then departure_date::date else null end	   	   
        , departure_time
        , email_valid::int
        , variety
