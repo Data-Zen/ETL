@@ -17,7 +17,7 @@ $rowsaffected=pg_affected_rows($rec);
 echo "Rows affected $rowsaffected \n\n";
 
 
-$sql="copy contact_staging from 's3://pbb-redshift/results.json' CREDENTIALS 'aws_access_key_id=AKIAJRGCCOIYLYRYFGEQ;aws_secret_access_key=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' json 'auto' ;";
+$sql="copy contact_staging from 's3://pbb-redshift/results.json' CREDENTIALS 'aws_access_key_id=$AWS_ACCESS_KEY_ID;aws_secret_access_key=$AWS_SECRET_ACCESS_KEY' json 'auto' ;";
 
 if ($debug==1)
 {

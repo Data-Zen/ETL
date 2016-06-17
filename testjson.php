@@ -10,8 +10,7 @@ include 'credentials/PBBCredentials.php';
 
 
 $connect = pg_connect($PBBModifyCredentials);
-
-$sql="select nvl(max(edit_date),'2010-01-01') from contact;";
+    $sql="select nvl(max(edit_date),'2010-01-01') from contact;";
 $result2 = pg_query($connect, $sql);
 
    while ($row = pg_fetch_array($result2)) {
