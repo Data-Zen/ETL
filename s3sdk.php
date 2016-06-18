@@ -21,16 +21,27 @@ $s3 = new Aws\S3\S3Client([
 $bucket = $S3bucketName;
 
 
-$s3->uploadDirectory($S3sourceDir, $S3bucketName);
+//$s3->uploadDirectory($S3sourceDir, $S3bucketName);
 
-                    
+$key=$processname.'.json';
+$result = $s3->putObject(array(
+    'Bucket'     => $S3bucketName,
+    'Key'        => $key,
+    'SourceFile' => $OutputFilePath,
+));
+
+$s3->waitUntil('ObjectExists', array(
+    'Bucket' => $S3bucketName,
+    'Key'    => $key
+));
+echo "Uploaded!\n";                    
 // Use the high-level iterators (returns ALL of your objects).
-$objects = $s3->getIterator('ListObjects', array('Bucket' => $bucket));
+//$objects = $s3->getIterator('ListObjects', array('Bucket' => $bucket));
 
-echo "Objects!\n";
-foreach ($objects as $object) {
-    echo $object['Key'] . "\n";
-}
+//echo "Objects!\n";
+//foreach ($objects as $object) {
+ //   echo $object['Key'] . "\n";
+//}
 
 /*
 // Use the plain API (returns ONLY up to 1000 of your objects).

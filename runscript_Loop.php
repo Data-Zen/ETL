@@ -25,6 +25,7 @@ $sql="select *
        $processname=$row["processname"];
        $rs_qry_to_know_progress_date=$row["rs_qry_to_know_progress_date"];
        $rs_qry_to_know_progress_id=$row["rs_qry_to_know_progress_id"];
+
       # $mysql_qry=$row["mysql_qry"];
       # $output_file_name=$row["output_file_name"];
       # $stage_table_name=$row["stage_table_name"];
@@ -37,6 +38,8 @@ if (!isset($processname)) {
   die;
 
 }
+
+$OutputFilePath='files/'.$processname.'.json';
 /* Get max date from mysql*/
 mysql_connect($servername ,$username, $password) OR DIE ('Unable to connect to database! Please try again later.');
 $sql="SELECT max(edit_date) edit_date FROM buypuppy_manager.contact ";

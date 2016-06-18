@@ -2,11 +2,21 @@
 #! /bin/bash
 SHELL=/bin/bash
 date
-if mkdir /tmp/pbb_etl; then
+
+proc_name=$1
+     if [ -z "$proc_name" ];
+      then
+      	
+      	echo -e "\n\n\n\nQuitting!  No Procedure Name Passed.\n\n\n\n"
+      	rm -rf $lockpath
+        exit -100
+      fi  
+lockpath="/tmp/pbb_etl_$proc_name"
+if mkdir $lockpath; then
   echo "Starting Script" >&2
 else
 	echo -e "\n\n\n\nScript Already running. Lock Creation Failed failed - exit
-  If you think this is an error try running: ' rm -rf /tmp/pbb_etl '\n\n\n\n"
+  If you think this is an error try running: ' rm -rf  $lockpath '\n\n\n\n"
   exit -1
 fi
 
@@ -19,17 +29,9 @@ fi
 
 cd $MyPath
   
-proc_name=$1
-     if [ -z "$proc_name" ];
-      then
-      	
-      	echo -e "\n\n\n\nQuitting!  No Procedure Name Passed.\n\n\n\n"
-      	rm -rf /tmp/pbb_etl
-        exit -100
-      fi  
 php ./runscript_Loop.php $proc_name
 
-rm -rf /tmp/pbb_etl
+rm -rf $lockpath
 
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
 
