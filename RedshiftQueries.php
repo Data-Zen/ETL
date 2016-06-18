@@ -6,7 +6,7 @@ echo "\n\n*******Running RedshiftQueries.php*************\n\n";
 include 'credentials/PBBCredentials.php';
 $connect = pg_connect($PBBModifyCredentials);
 
-$sql="delete contact_staging;";
+$sql="delete ".$processname."_staging;";
 
 if ($debug==1)
 {
@@ -17,7 +17,7 @@ $rowsaffected=pg_affected_rows($rec);
 echo "Rows affected $rowsaffected \n\n";
 
 
-$sql="copy contact_staging from 's3://pbb-redshift/results.json' CREDENTIALS 'aws_access_key_id=$AWS_ACCESS_KEY_ID;aws_secret_access_key=$AWS_SECRET_ACCESS_KEY' json 'auto' ;";
+$sql="copy $processname"."_staging from 's3://pbb-redshift/$processname.json' CREDENTIALS 'aws_access_key_id=$AWS_ACCESS_KEY_ID;aws_secret_access_key=$AWS_SECRET_ACCESS_KEY' json 'auto' ;";
 
 if ($debug==1)
 {

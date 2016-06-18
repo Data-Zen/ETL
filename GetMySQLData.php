@@ -11,13 +11,15 @@ $ChunkSize=50000;
 
 
 $connect = pg_connect($PBBModifyCredentials);
-    $sql="select nvl(max(edit_date),'2001-01-01') from contact;";
+eval("\$rs_qry_to_know_progress_date = \"$rs_qry_to_know_progress_date\";");
+    $sql=$rs_qry_to_know_progress_date;
 $result2 = pg_query($connect, $sql);
 
    while ($row = pg_fetch_array($result2)) {
      $maxRSdate= $row[0];
    }
-$sql="select nvl(max(id),0) from contact where edit_date = '$maxRSdate';";
+eval("\$rs_qry_to_know_progress_id = \"$rs_qry_to_know_progress_id\";");
+$sql=$rs_qry_to_know_progress_id;
 $result2 = pg_query($connect, $sql);
 
    while ($row = pg_fetch_array($result2)) {
@@ -37,9 +39,8 @@ if (mysqli_connect_errno()) {
     exit();
 }
                                                 $start_timer_1 = microtime(true); 
-$query = "SELECT 
-    *
-    FROM buypuppy_manager.contact where edit_date >= '$maxRSdate' and id >$minRSid order by edit_date asc,id asc limit $ChunkSize;";
+eval("\$mysql_qry = \"$mysql_qry\";");
+$query = $mysql_qry;
 echo "\n*******StartQuery\n".$query."\n*******EndQuery\n";
 if ($result = mysqli_query($link, $query)) {
 
@@ -51,7 +52,7 @@ if ($result = mysqli_query($link, $query)) {
     }
 	
                                                 $end1 = round((microtime(true) - $start_timer_1),2);
-                                            	echo "\nelapsed time for MysqlQuery: $end1 seconds \n";
+                                            	echo "\n======elapsed time for MysqlQuery: $end1 seconds \n";
 	                                           $start_timer_1 = microtime(true); 
     $jsonresults = json_encode($newArr);
     //echo var_dump($jsonresults);
@@ -69,9 +70,11 @@ if ($result = mysqli_query($link, $query)) {
     //$fp = fopen('files/results.json', 'w');
 	//fwrite($fp, $jsonresults);
 	//fclose($fp);
-    file_put_contents('files/results.json', $jsonresults);
+    //$OutputFilePath='files/results.json';
+    $OutputFilePath='files/'.$processname.'.json';
+    file_put_contents($OutputFilePath, $jsonresults);
                                                 $end1 = round((microtime(true) - $start_timer_1),2);
-                                            	echo "\nelapsed time for JsonEncoding and Writing: $end1 seconds \n";
+                                            	echo "\n\n======elapsed time for JsonEncoding and Writing: $end1 seconds \n";
 
 
 }
