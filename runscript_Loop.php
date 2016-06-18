@@ -48,13 +48,22 @@ $result2 = mysql_query($sql);
 $resultsrow = mysql_fetch_assoc($result2);   
 //var_dump($resultsrow); // see what type of variable mysql_fetch_array() gave you
 $mysqlEndDate = $resultsrow['dt'];  
- 
 
+$date = date_parse($mysqlEndDate);
+if ($date["error_count"] == 0 && checkdate($date["month"], $date["day"], $date["year"]))
+    {
+    echo "Valid date";
+    $maxRSdate = '1/1/1900';
+    $enddate =date($mysqlEndDate);   
+    echo "MySQL EndDate: $enddate";  
+  }
+else {
+    $maxRSdate = 0;
+    $enddate =$mysqlEndDate;   
+    echo "MySQL EndDate: $enddate";
+}
 
-$maxRSdate = '1/1/1900';
-$enddate =date($mysqlEndDate);   
-echo "MySQL EndDate: $enddate";
-while  ( strtotime("$maxRSdate") < strtotime($enddate))
+while  ( $maxRSdate < $enddate)
 {
     $execstring = "php runscript.php $processname 2>&1";
     echo "\n$execstring\n";
@@ -76,7 +85,10 @@ while  ( strtotime("$maxRSdate") < strtotime($enddate))
        while ($row = pg_fetch_array($result2)) {
          $minRSid= $row[0];
        }
-
+       if ($maxRSdate ='2001-01-01')
+       {
+        $maxRSdate=$minRSid;
+       }
     echo "\n\nCurrent MaxRSDate:$maxRSdate\n\n";
     echo "\n\nCurrent minRSid:$minRSid\n\n";
     //usleep(500000);

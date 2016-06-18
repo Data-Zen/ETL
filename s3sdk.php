@@ -34,7 +34,7 @@ $s3->waitUntil('ObjectExists', array(
     'Bucket' => $S3bucketName,
     'Key'    => $key
 ));
-echo "Uploaded!\n";                    
+echo "Uploaded! $key\n";                    
 // Use the high-level iterators (returns ALL of your objects).
 //$objects = $s3->getIterator('ListObjects', array('Bucket' => $bucket));
 
