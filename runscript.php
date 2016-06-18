@@ -31,8 +31,15 @@ $sql="select *
        $chunksize=$row["chunksize"];
        }
 
-echo "\n\n\n\n\n\n\n\n Running: $processname \n\n\n\n\n\n\n\n\n\n\n";
-
+echo "\n\n\n\n\n\n\n\n ProcessName: $processname \n";
+/*
+echo "\n\n\n\n\n\n\n\n rs_qry_to_know_progress_date: $rs_qry_to_know_progress_date \n";
+echo "\n\n\n\n\n\n\n\n rs_qry_to_know_progress_id: $rs_qry_to_know_progress_id \n";
+echo "\n\n\n\n\n\n\n\n mysql_qry: $mysql_qry \n";
+echo "\n\n\n\n\n\n\n\n rs_delete_qry: $rs_delete_qry \n";
+echo "\n\n\n\n\n\n\n\n rs_insert_from_stage_qry: $rs_insert_from_stage_qry \n";
+echo "\n\n\n\n\n\n\n\n chunksize: $chunksize \n";
+*/
 				$start_timer_11 = microtime(true); 
 include('GetMySQLData.php');
 			    $end11 = round((microtime(true) - $start_timer_11),2);

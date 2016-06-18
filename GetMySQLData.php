@@ -13,6 +13,7 @@ $ChunkSize=50000;
 $connect = pg_connect($PBBModifyCredentials);
 eval("\$rs_qry_to_know_progress_date = \"$rs_qry_to_know_progress_date\";");
     $sql=$rs_qry_to_know_progress_date;
+    echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
 $result2 = pg_query($connect, $sql);
 
    while ($row = pg_fetch_array($result2)) {
@@ -20,6 +21,7 @@ $result2 = pg_query($connect, $sql);
    }
 eval("\$rs_qry_to_know_progress_id = \"$rs_qry_to_know_progress_id\";");
 $sql=$rs_qry_to_know_progress_id;
+echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
 $result2 = pg_query($connect, $sql);
 
    while ($row = pg_fetch_array($result2)) {

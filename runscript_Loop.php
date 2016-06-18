@@ -26,7 +26,7 @@ $sql="select *
        $rs_qry_to_know_progress_date=$row["rs_qry_to_know_progress_date"];
        $rs_qry_to_know_progress_id=$row["rs_qry_to_know_progress_id"];
 
-      # $mysql_qry=$row["mysql_qry"];
+       $my_sql_checkmaxdate=$row["my_sql_checkmaxdate"];
       # $output_file_name=$row["output_file_name"];
       # $stage_table_name=$row["stage_table_name"];
       # $rs_delete_qry=$row["rs_delete_qry"];
@@ -42,12 +42,12 @@ if (!isset($processname)) {
 $OutputFilePath='files/'.$processname.'.json';
 /* Get max date from mysql*/
 mysql_connect($servername ,$username, $password) OR DIE ('Unable to connect to database! Please try again later.');
-$sql="SELECT max(edit_date) edit_date FROM buypuppy_manager.contact ";
+$sql=$my_sql_checkmaxdate;
 echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
 $result2 = mysql_query($sql);
 $resultsrow = mysql_fetch_assoc($result2);   
 //var_dump($resultsrow); // see what type of variable mysql_fetch_array() gave you
-$mysqlEndDate = $resultsrow['edit_date'];  
+$mysqlEndDate = $resultsrow['dt'];  
  
 
 
