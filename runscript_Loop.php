@@ -27,6 +27,7 @@ $sql="select *
        $rs_qry_to_know_progress_id=$row["rs_qry_to_know_progress_id"];
 
        $my_sql_checkmaxdate=$row["my_sql_checkmaxdate"];
+
       # $output_file_name=$row["output_file_name"];
       # $stage_table_name=$row["stage_table_name"];
       # $rs_delete_qry=$row["rs_delete_qry"];
@@ -43,27 +44,29 @@ $OutputFilePath='files/'.$processname.'.json';
 /* Get max date from mysql*/
 mysql_connect($servername ,$username, $password) OR DIE ('Unable to connect to database! Please try again later.');
 $sql=$my_sql_checkmaxdate;
-echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
+echo "\n*******StartQuery mysql_query\n".$sql."\n*******EndQuery\n";
 $result2 = mysql_query($sql);
 $resultsrow = mysql_fetch_assoc($result2);   
 //var_dump($resultsrow); // see what type of variable mysql_fetch_array() gave you
 $mysqlEndDate = $resultsrow['dt'];  
 
+
+// mysqlEndDate sometimes is an integer and sometimes a date depending on table
 $date = date_parse($mysqlEndDate);
 if ($date["error_count"] == 0 && checkdate($date["month"], $date["day"], $date["year"]))
     {
     echo "Valid date";
-    $maxRSdate = '1/1/1900';
+    $maxRSdate = '1/1/1900';  // Set this so that we enter loop
     $enddate =date($mysqlEndDate);   
-    echo "MySQL EndDate: $enddate";  
   }
 else {
-    $maxRSdate = 0;
-    $enddate =$mysqlEndDate;   
-    echo "MySQL EndDate: $enddate";
-}
+    $maxRSdate = 0;  // Set this so that we enter loop
+    $enddate =$mysqlEndDate;   //Integer
+    
+  }
+echo "MySQL EndDate: $enddate";
 
-while  ( $maxRSdate < $enddate)
+while  ( $maxRSdate < $enddate)  // Actually used to end the loop
 {
     $execstring = "php runscript.php $processname 2>&1";
     echo "\n$execstring\n";

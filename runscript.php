@@ -28,10 +28,10 @@ $sql="select *
        # $stage_table_name=$row["stage_table_name"];
        $rs_delete_qry=$row["rs_delete_qry"];
        $rs_insert_from_stage_qry=$row["rs_insert_from_stage_qry"];
-       $chunksize=$row["chunksize"];
+       $ChunkSize=$row["chunksize"];
        }
 
-echo "\n\n\n\n\n\n\n\n ProcessName: $processname \n";
+echo "\n\n\n\n\n\n\n\n Inside runscript.php  -- ProcessName: $processname \n";
 /*
 echo "\n\n\n\n\n\n\n\n rs_qry_to_know_progress_date: $rs_qry_to_know_progress_date \n";
 echo "\n\n\n\n\n\n\n\n rs_qry_to_know_progress_id: $rs_qry_to_know_progress_id \n";
@@ -40,6 +40,11 @@ echo "\n\n\n\n\n\n\n\n rs_delete_qry: $rs_delete_qry \n";
 echo "\n\n\n\n\n\n\n\n rs_insert_from_stage_qry: $rs_insert_from_stage_qry \n";
 echo "\n\n\n\n\n\n\n\n chunksize: $chunksize \n";
 */
+        $start_timer_11 = microtime(true); 
+include('RedshiftTruncateQueries.php');
+          $end11 = round((microtime(true) - $start_timer_11),2);
+        echo "\n=====================elapsed time for Redshift truncate: $end11 seconds \n";
+
 				$start_timer_11 = microtime(true); 
 include('GetMySQLData.php');
 			    $end11 = round((microtime(true) - $start_timer_11),2);

@@ -4,24 +4,25 @@ echo "\n\n*******Running GetMySQLData.php*************\n\n";
 
 include 'credentials/PBBCredentials.php';
 
-$ChunkSize=50000;
+#$ChunkSize=50000;
 
 /* Get the biggest id from Redshift  */
+
 
 
 
 $connect = pg_connect($PBBModifyCredentials);
 eval("\$rs_qry_to_know_progress_date = \"$rs_qry_to_know_progress_date\";");
     $sql=$rs_qry_to_know_progress_date;
-    echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
+    echo "\n*******StartQuery rs_qry_to_know_progress_date\n".$sql."\n*******EndQuery\n";
 $result2 = pg_query($connect, $sql);
 
    while ($row = pg_fetch_array($result2)) {
      $maxRSdate= $row[0];
    }
-eval("\$rs_qry_to_know_progress_id = \"$rs_qry_to_know_progress_id\";");
+//eval("\$rs_qry_to_know_progress_id = \"$rs_qry_to_know_progress_id\";");
 $sql=$rs_qry_to_know_progress_id;
-echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
+echo "\n*******StartQuery rs_qry_to_know_progress_id\n".$sql."\n*******EndQuery\n";
 $result2 = pg_query($connect, $sql);
 
    while ($row = pg_fetch_array($result2)) {
@@ -43,7 +44,7 @@ if (mysqli_connect_errno()) {
                                                 $start_timer_1 = microtime(true); 
 eval("\$mysql_qry = \"$mysql_qry\";");
 $query = $mysql_qry;
-echo "\n*******StartQuery\n".$query."\n*******EndQuery\n";
+echo "\n*******StartQuery mysqli_query\n".$query."\n*******EndQuery\n";
 if ($result = mysqli_query($link, $query)) {
 
     $newArr = array();
