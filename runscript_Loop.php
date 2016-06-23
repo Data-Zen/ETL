@@ -66,14 +66,23 @@ else {
   }
 echo "MySQL EndDate: $enddate";
 
+
+
+        $start_timer_11 = microtime(true); 
+include('RedshiftTruncateQueries.php');
+          $end11 = round((microtime(true) - $start_timer_11),2);
+        echo "\n=====================elapsed time for Redshift truncate: $end11 seconds \n";
+
+$i=0;
 while  ( $maxRSdate < $enddate)  // Actually used to end the loop
 {
+    $i=$i+1;
     $execstring = "php runscript.php $processname 2>&1";
     echo "\n$execstring\n";
      passthru ($execstring);
     //echo "\n\n$output\n\n";
 
-     echo "\n\n\n\n\n\n\n\n Completed: $processname \n\n\n\n\n\n\n\n\n\n\n";
+     echo "\n\n\n\n\n\n\n\n Completed loop iteration $i: $processname \n\n\n\n\n\n\n\n\n\n\n";
     eval("\$rs_qry_to_know_progress_date = \"$rs_qry_to_know_progress_date\";");
     $sql=$rs_qry_to_know_progress_date;
     $result2 = pg_query($connect, $sql);
@@ -97,5 +106,26 @@ while  ( $maxRSdate < $enddate)  // Actually used to end the loop
     //usleep(500000);
 
 }
+/* Rename realtables to old tables and Dev Tables to real tables */
+
+  
+    $sql=" drop table if exists $processname"."_bkup";
+    echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
+    $result2 = pg_query($connect, $sql);
+
+    $sql=" alter table $processname rename to $processname"."_bkup";
+    echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
+    $result2 = pg_query($connect, $sql);
+
+    $sql=" alter table $processname"."_dev rename to $processname";
+    echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
+    $result2 = pg_query($connect, $sql);
+
+    $sql=" select * into $processname"."_dev from $processname where 1=2";
+    echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
+    $result2 = pg_query($connect, $sql);    
+ 
+
 
 ?>
+
