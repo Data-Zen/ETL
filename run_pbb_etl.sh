@@ -9,7 +9,7 @@ proc_name=$1
       	
       	echo -e "\n\n\n\nQuitting!  No Procedure Name Passed.\n\n\n\n"
       	rm -rf $lockpath
-        exit -100
+        exit 100
       fi  
 lockpath="/tmp/pbb_etl_$proc_name"
 if mkdir $lockpath; then
@@ -17,7 +17,7 @@ if mkdir $lockpath; then
 else
 	echo -e "\n\n\n\nScript Already running. Lock Creation Failed failed - exit
   If you think this is an error try running: ' rm -rf  $lockpath '\n\n\n\n"
-  exit -1
+  exit 1
 fi
 
 START_TIME=$SECONDS
@@ -39,3 +39,4 @@ let ELAPSED_TIME_Minutes=$ELAPSED_TIME/60
 
 echo "ELAPSED_TIME: $ELAPSED_TIME Seconds" ;
 echo "ELAPSED_TIME: $ELAPSED_TIME_Minutes Minutes" ;
+date

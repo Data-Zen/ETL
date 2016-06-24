@@ -13,6 +13,7 @@ include 'credentials/PBBCredentials.php';
 
 $connect = pg_connect($PBBModifyCredentials);
 eval("\$rs_qry_to_know_progress_date = \"$rs_qry_to_know_progress_date\";");
+
     $sql=$rs_qry_to_know_progress_date;
     echo "\n*******StartQuery rs_qry_to_know_progress_date\n".$sql."\n*******EndQuery\n";
 $result2 = pg_query($connect, $sql);
@@ -46,7 +47,7 @@ eval("\$mysql_qry = \"$mysql_qry\";");
 $query = $mysql_qry;
 echo "\n*******StartQuery mysqli_query\n".$query."\n*******EndQuery\n";
 if ($result = mysqli_query($link, $query)) {
-
+printf("Affected rows (SELECT): %d\n", mysqli_affected_rows($link));
     $newArr = array();
     /* fetch associative array */
     while ($db_field = mysqli_fetch_assoc($result)) {

@@ -6,7 +6,7 @@ echo "\n\n*******Running RedshiftQueries.php*************\n\n";
 include 'credentials/PBBCredentials.php';
 $connect = pg_connect($PBBModifyCredentials);
 
-$sql="delete ".$processname."_staging;";
+$sql="truncate table ".$processname."_staging;";
 
 if ($debug==1)
 {

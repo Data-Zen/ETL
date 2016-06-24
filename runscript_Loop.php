@@ -84,7 +84,9 @@ while  ( $maxRSdate < $enddate)  // Actually used to end the loop
 
      echo "\n\n\n\n\n\n\n\n Completed loop iteration $i: $processname \n\n\n\n\n\n\n\n\n\n\n";
     eval("\$rs_qry_to_know_progress_date = \"$rs_qry_to_know_progress_date\";");
+
     $sql=$rs_qry_to_know_progress_date;
+    echo "\n*******StartQuery rs_qry_to_know_progress_date\n".$sql."\n*******EndQuery\n";
     $result2 = pg_query($connect, $sql);
 
        while ($row = pg_fetch_array($result2)) {
@@ -92,17 +94,20 @@ while  ( $maxRSdate < $enddate)  // Actually used to end the loop
        }
     eval("\$rs_qry_to_know_progress_id = \"$rs_qry_to_know_progress_id\";");
     $sql=$rs_qry_to_know_progress_id;
+    echo "\n*******StartQuery rs_qry_to_know_progress_id\n".$sql."\n*******EndQuery\n";    
     $result2 = pg_query($connect, $sql);
 
        while ($row = pg_fetch_array($result2)) {
          $minRSid= $row[0];
        }
-       if ($maxRSdate ='2001-01-01')
+    echo "\n\nCurrent MaxRSDate:$maxRSdate\n\n";   
+       if ($maxRSdate == '2001-01-01')
        {
         $maxRSdate=$minRSid;
        }
     echo "\n\nCurrent MaxRSDate:$maxRSdate\n\n";
-    echo "\n\nCurrent minRSid:$minRSid\n\n";
+    echo "\n\nCurrent enddate:$enddate\n\n\n\n\n";
+     echo "\n\nCurrent minRSid:$minRSid\n\n";
     //usleep(500000);
 
 }
