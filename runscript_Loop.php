@@ -13,6 +13,9 @@ if (isset($argv[1])) {
 include 'credentials/PBBCredentials.php';
 $connect = pg_connect($PBBModifyCredentials);
 
+
+
+
 $sql="select * 
        from
         dw_processes
@@ -39,6 +42,13 @@ if (!isset($processname)) {
   die;
 
 }
+$uid= uniqid();
+
+  $sql="INSERT INTO dw_processes_history 
+  select '$uid','$processname','start',getdate();";
+    echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
+    $result2 = pg_query($connect, $sql);    
+
 
 $OutputFilePath='files/'.$processname.'.json';
 /* Get max date from mysql*/
@@ -130,6 +140,13 @@ while  ( $maxRSdate < $enddate)  // Actually used to end the loop
     echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
     $result2 = pg_query($connect, $sql);    
  
+
+
+
+  $sql="INSERT INTO dw_processes_history 
+  select '$uid','$processname','end',getdate();";
+    echo "\n*******StartQuery\n".$sql."\n*******EndQuery\n";
+    $result2 = pg_query($connect, $sql);    
 
 
 ?>
