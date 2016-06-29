@@ -11,7 +11,7 @@ proc_name=$1
       	rm -rf $lockpath
         exit 100
       fi  
-lockpath="/tmp/pbb_etl_$proc_name"
+lockpath="/tmp/pbb_CurrenltyProcessing_etl_$proc_name"
 if mkdir $lockpath; then
   echo "Starting Script" >&2
 else
