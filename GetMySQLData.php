@@ -58,7 +58,12 @@ printf("Affected rows (SELECT): %d\n", mysqli_affected_rows($link));
                                                 $end1 = round((microtime(true) - $start_timer_1),2);
                                             	echo "\n======elapsed time for MysqlQuery: $end1 seconds \n";
 	                                           $start_timer_1 = microtime(true); 
-    $jsonresults = json_encode($newArr);
+    
+    $jsonresults = json_encode($newArr, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+
+    //$jsonresults = json_encode($newArr);
+   // echo var_dump($newArr);
+     // echo "\n\n\n";
     //echo var_dump($jsonresults);
     //die;
     /* Needed to Match Redshift JSON Format */
@@ -76,6 +81,7 @@ printf("Affected rows (SELECT): %d\n", mysqli_affected_rows($link));
 	//fclose($fp);
     //$OutputFilePath='files/results.json';
     $OutputFilePath='files/'.$processname.'.json';
+    unlink($OutputFilePath);
     file_put_contents($OutputFilePath, $jsonresults);
                                                 $end1 = round((microtime(true) - $start_timer_1),2);
                                             	echo "\n\n======elapsed time for JsonEncoding and Writing: $end1 seconds \n";
