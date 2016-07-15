@@ -14,6 +14,17 @@ do
   fi
 
   cd $MyPath
+
+  START_TIME2=$SECONDS
+  echo "Now Running: ReplicationWait" ;
+  php ./Replicatiom_wait.php 
+  ELAPSED_TIME2=$(($SECONDS - $START_TIME2))
+  echo "ELAPSED_TIME: $ELAPSED_TIME2 Seconds" ;
+  START_TIME2=$SECONDS
+
+
+
+
   START_TIME2=$SECONDS
   echo "Now Running: geodesic_classifieds_categories_languages" ;
   /home/pkats/scripts/pbb_etl/run_pbb_etl.sh geodesic_classifieds_categories_languages  >/tmp/geodesic_classifieds_categories_languages.log 2>&1
