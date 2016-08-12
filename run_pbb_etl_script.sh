@@ -1,6 +1,26 @@
 
 #! /bin/bash
 SHELL=/bin/bash
+
+date
+
+proc_name="Full"
+     if [ -z "$proc_name" ];
+      then
+        
+        echo -e "\n\n\n\nQuitting!  No Procedure Name Passed.\n\n\n\n"
+        rm -rf $lockpath
+        exit 100
+      fi  
+lockpath="/tmp/pbb_CurrenltyProcessing_etl_$proc_name"
+if mkdir $lockpath; then
+  echo "Starting Script" >&2
+else
+  echo -e "\n\n\n\nScript Already running. Lock Creation Failed failed - exit
+  If you think this is an error try running: ' rm -rf  $lockpath '\n\n\n\n"
+  exit 1
+fi
+
 while true
 do
 
@@ -96,3 +116,5 @@ do
   date
 
 done
+
+rm -rf $lockpath
