@@ -107,6 +107,7 @@ $connect = pg_connect($PBBModifyCredentials);
     $sql=str_ireplace ('`', '"', $sql);
     $sql=str_ireplace ('AUTO_INCREMENT', "", $sql);
     $sql=str_ireplace ('UNSIGNED', "", $sql);
+    $sql=str_ireplace (', urlencode', "", $sql);
     $sql=str_ireplace ('CREATE TABLE ', "CREATE TABLE $db.", $sql);
     
     
@@ -116,12 +117,16 @@ $connect = pg_connect($PBBModifyCredentials);
 	$sql=str_ireplace ('mediumtext', 'text', $sql);
 	$sql=str_ireplace (' tinyint', ' int', $sql);
 	$sql=str_ireplace (' smallint', ' int', $sql);
+	$sql=str_ireplace (' time ', ' timestamp ', $sql);	
 	$sql=str_ireplace (' varbinary', ' varchar', $sql);
-    $sql= preg_replace("/ DEFAULT([^,]+)/"," ",$sql); // 'ABC '
+   $sql= preg_replace("/ COLLATE([^,|)]+)/"," ",$sql); // 'ABC '
+    $sql= preg_replace("/ DEFAULT([^,|)]+)/"," ",$sql); // 'ABC '
    $sql= preg_replace("/(?<=\ int)[^)]+\)/"," ",$sql); // 'ABC '
+   $sql= preg_replace("/(?<=\ bigint)[^)]+\)/"," ",$sql); // 'ABC '
    $sql= preg_replace("/(?<=\"int\()[^)]+\)/","",$sql); // 'ABC '   
    	$sql=str_ireplace ('int(', 'int', $sql);
-   $sql= preg_replace("/ COLLATE([^,]+)/"," ",$sql); // 'ABC '
+
+   $sql= preg_replace("/ CHARACTER([^,]+)/"," ",$sql); // 'ABC '
 	$sql= preg_replace("/ COMMENT([^,]+)/"," ",$sql); // 'ABC '
 	$sql= preg_replace("/ decimal([^ ]+)/"," float",$sql); // 'ABC '
 	$sql= preg_replace("/ double([^ ]+)/"," float",$sql); // 'ABC '	
@@ -159,7 +164,7 @@ $sql= implode("\n", $exclude);
 
 
 
-$sql=" drop table if exists \"" .  $table . "\";drop table if exists $db.\"" .  $table . "\";
+$sql=" drop table if exists $db.\"" .  $table . "\";
 ".$sql;
 
 if ($debug==1)
