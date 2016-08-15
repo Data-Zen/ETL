@@ -109,7 +109,7 @@ $connect = pg_connect($PBBModifyCredentials);
     $sql=str_ireplace ('UNSIGNED', "", $sql);
     $sql=str_ireplace (', urlencode', "", $sql);
     $sql=str_ireplace ('CREATE TABLE ', "CREATE TABLE $db.", $sql);
-    
+   	$sql=str_ireplace ('not null', '', $sql);    
     
 	$sql=str_ireplace (' user ', ' "user" ', $sql);
 	$sql=str_ireplace (' longtext', ' text', $sql);
@@ -118,6 +118,7 @@ $connect = pg_connect($PBBModifyCredentials);
 	$sql=str_ireplace (' tinyint', ' int', $sql);
 	$sql=str_ireplace (' smallint', ' int', $sql);
 	$sql=str_ireplace (' time ', ' timestamp ', $sql);	
+	//$sql=str_ireplace (' timestamp ', ' varchar(50) ', $sql);	
 	$sql=str_ireplace (' varbinary', ' varchar', $sql);
    $sql= preg_replace("/ COLLATE([^,|)]+)/"," ",$sql); // 'ABC '
     $sql= preg_replace("/ DEFAULT([^,|)]+)/"," ",$sql); // 'ABC '
@@ -125,6 +126,7 @@ $connect = pg_connect($PBBModifyCredentials);
    $sql= preg_replace("/(?<=\ bigint)[^)]+\)/"," ",$sql); // 'ABC '
    $sql= preg_replace("/(?<=\"int\()[^)]+\)/","",$sql); // 'ABC '   
    	$sql=str_ireplace ('int(', 'int', $sql);
+
 
    $sql= preg_replace("/ CHARACTER([^,]+)/"," ",$sql); // 'ABC '
 	$sql= preg_replace("/ COMMENT([^,]+)/"," ",$sql); // 'ABC '
