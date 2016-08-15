@@ -105,11 +105,12 @@ $connect = pg_connect($PBBModifyCredentials);
     $sql=$createtable;
 
     $sql=str_ireplace ('`', '"', $sql);
+
     $sql=str_ireplace ('AUTO_INCREMENT', "", $sql);
-    $sql=str_ireplace ('UNSIGNED', "", $sql);
     $sql=str_ireplace (', urlencode', "", $sql);
     $sql=str_ireplace ('CREATE TABLE ', "CREATE TABLE $db.", $sql);
    	$sql=str_ireplace ('not null', '', $sql);    
+
     
 	$sql=str_ireplace (' user ', ' "user" ', $sql);
 	$sql=str_ireplace (' longtext', ' text', $sql);
@@ -117,7 +118,11 @@ $connect = pg_connect($PBBModifyCredentials);
 	$sql=str_ireplace ('mediumtext', 'text', $sql);
 	$sql=str_ireplace (' tinyint', ' int', $sql);
 	$sql=str_ireplace (' smallint', ' int', $sql);
-	$sql=str_ireplace (' time ', ' timestamp ', $sql);	
+	$sql=str_ireplace (' time ', ' varchar(8) ', $sql);	
+	$sql=str_ireplace (' text ', ' varchar(max) ', $sql);	
+
+	$sql=str_ireplace (' varchar(255) ', ' varchar (300) ', $sql);
+	$sql=str_ireplace (' varchar (255) ', ' varchar (300) ', $sql);
 	//$sql=str_ireplace (' timestamp ', ' varchar(50) ', $sql);	
 	$sql=str_ireplace (' varbinary', ' varchar', $sql);
    $sql= preg_replace("/ COLLATE([^,|)]+)/"," ",$sql); // 'ABC '
@@ -138,6 +143,13 @@ $connect = pg_connect($PBBModifyCredentials);
 
    $sql= preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $sql);
    $sql= preg_replace("/ENGINE.*$/", "", $sql);
+
+   $sql=str_ireplace ('UNSIGNED', "bigint", $sql);
+   $sql=str_ireplace ("  ", " ", $sql); 
+   $sql=str_ireplace ("bigint bigint", "bigint", $sql); 
+   $sql=str_ireplace ("int bigint", "bigint", $sql); 
+   $sql=str_ireplace ("float bigint", "float", $sql); 
+
    $sql=trim($sql);
 
 

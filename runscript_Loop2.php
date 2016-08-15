@@ -18,7 +18,7 @@ join pg_database on pg_database.oid = stv_tbl_perm.db_id
 where trim(nspname) ilike '%pupp%'
 and relname not ilike '%contact%'
 order by trim(nspname) ,rows ,trim(relname)
-limit 10;";
+;";
 
 echo "\n*******StartQuery\n" . $sql . "\n*******EndQuery\n";
 $resulttotal = pg_query($connect, $sql);
@@ -31,8 +31,8 @@ while ($row = pg_fetch_array($resulttotal)) {
     
     $mysqltbl          = $schema_name . "." . $table_name ;
    // $mysqltbl          = $schema_name . "_" . $table_name ;    
-   echo "\n\n\n\n111111111111111111111  $mysqltbl\n\n\n";
-    $ChunkSize         = 100;
+  
+    $ChunkSize         = 1000000;
     
     # $output_file_name=$row["output_file_name"];
     # $stage_table_name=$row["stage_table_name"];
@@ -52,7 +52,7 @@ while ($row = pg_fetch_array($resulttotal)) {
     $i           = 0;
     $offset      = 0;
     $recordcount = 1;
-    while ($recordcount > 0 and $i < 100) // Actually used to end the loop
+    while ($recordcount > 0 and $i < 1000) // Actually used to end the loop
         {
         
         $execstring = "php runscript2.php " . $i * $ChunkSize . " $ChunkSize $mysqltbl ";
@@ -63,10 +63,10 @@ while ($row = pg_fetch_array($resulttotal)) {
         //passthru ($execstring);
         //echo "\n\nOutput:" . $output[0] . "\n\n";
         //var_dump($output) ;
-        echo "\n\nReturnValue:$return_value\n\n";
+        echo "\nReturnValue:$return_value\n";
         $recordcount = $return_value;
         $i           = $i + 1;
-        echo "\n\n\n\n\n\n\n\n Completed loop iteration $i: $mysqltbl \n\n\n\n\n\n\n\n\n\n\n";
+        echo "\nCompleted loop iteration $i: $mysqltbl \n";
         //usleep(500000);
         
     }
