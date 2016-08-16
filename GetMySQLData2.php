@@ -1,15 +1,6 @@
 <?php
 $start_total_timer = microtime(true);
 echo "\n\n*******Running GetMySQLData.php*************\n\n";
-
-//include 'credentials/PBBCredentials.php';
-
-#$ChunkSize=50000;
-
-/* Get the biggest id from Redshift  */
-
-
-
                 $start_timer_1 = microtime(true); 
 
 $link = mysqli_connect($servername, $username, $password, $dbname);
@@ -33,7 +24,8 @@ echo "Starting Write to CSV \n";while($row = mysqli_fetch_assoc($result)) {
 
     // this is the customer/order data
   //$row=str_replace('"', '""', $row);
-  $row = preg_replace("/[^a-zA-Z 0-9]+/", "", $row );
+  //$row = preg_replace($regex, '$1', $row);
+  $row =preg_replace('/[^a-zA-Z0-9_ %\[\]\.\(\)%&-]/s', '', $row);
     fputcsv($fp, $row,",","%");
 }
 echo "Export Completed \n";

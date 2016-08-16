@@ -1,7 +1,7 @@
 <?php
-
-$HowManyMySQLQueriesRunningThreshold = 2;
-$ChunkSize = 2000000;
+$start_total_timer = microtime(true);
+$HowManyMySQLQueriesRunningThreshold = 6;
+$ChunkSize = 4000000;
 
 
 include 'credentials/PBBCredentials.php';
@@ -20,7 +20,7 @@ join pg_class on pg_class.oid = stv_tbl_perm.id
 join pg_namespace on pg_namespace.oid = relnamespace
 join pg_database on pg_database.oid = stv_tbl_perm.db_id
 where trim(nspname) ilike '%pupp%'
-and relname not ilike '%contact%'
+--and relname not ilike '%contact%'
 group by 1,2,3
 order by trim(nspname) ,trim(relname),max(rows) ;";
 
@@ -46,7 +46,7 @@ while ($row = pg_fetch_array($resulttotal)) {
     
     $link = mysqli_connect($servername, $username, $password, $dbname);
     
-    $query = "select count(1) ct from information_schema.processlist where user='pbpaul';";
+    $query = "select count(distinct id) ct from information_schema.processlist where user='pbpaul' and time > 0;";
     
 
     $HowManyMySQLQueriesRunning          = $HowManyMySQLQueriesRunningThreshold + 1;
@@ -64,7 +64,7 @@ while ($row = pg_fetch_array($resulttotal)) {
         echo "\nHowManyMySQLQueriesRunning: $HowManyMySQLQueriesRunning";
         if ($HowManyMySQLQueriesRunning > $HowManyMySQLQueriesRunningThreshold) {
             echo "\nSleeping 10 Seconds...";
-            sleep(30);
+            sleep(10);
         }
     }
     
@@ -104,6 +104,8 @@ while ($row = pg_fetch_array($resulttotal)) {
 
 
 print strftime('%c');
+     $end11 = round((microtime(true) - $start_total_timer),2);
+        echo "\n=============================== Elapsed Total Time " . round($end11 /60,1) ." Minutes =============================== \n";
 
 
 ?>
