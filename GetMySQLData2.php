@@ -15,7 +15,7 @@ echo "\n\n*******Running GetMySQLData.php*************\n\n";
 $link = mysqli_connect($servername, $username, $password, $dbname);
 $link->set_charset("utf8");
 
-    $query         = "select * from $mysqltbl order by 1,2 LIMIT $ChunkSize OFFSET $offset";
+    $query         = "select * from $mysqltbl order by 1 LIMIT $ChunkSize OFFSET $offset";
     echo "\n*******StartQuery mysqli_query\n" . $query . "\n*******EndQuery\n";
     if ($result = mysqli_query($link, $query)) {
         $mysqlaffectedrows = mysqli_affected_rows($link);
@@ -32,7 +32,9 @@ echo "Starting Write to CSV \n";while($row = mysqli_fetch_assoc($result)) {
    // }
 
     // this is the customer/order data
-    fputcsv($fp, $row);
+  //$row=str_replace('"', '""', $row);
+  $row = preg_replace("/[^a-zA-Z 0-9]+/", "", $row );
+    fputcsv($fp, $row,",","%");
 }
 echo "Export Completed \n";
 fclose($fp);

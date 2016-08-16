@@ -1,8 +1,12 @@
 <?php
 
+$HowManyMySQLQueriesRunningThreshold = 2;
+$ChunkSize = 2000000;
+
+
 include 'credentials/PBBCredentials.php';
 
-
+print strftime('%c');
 $connect = pg_connect($PBBModifyCredentials);
 
 $sql = "select 
@@ -24,7 +28,8 @@ echo "\n*******StartQuery\n" . $sql . "\n*******EndQuery\n";
 $resulttotal = pg_query($connect, $sql);
 $i           = 1;
 while ($row = pg_fetch_array($resulttotal)) {
-    
+    include 'Replication_wait.php';
+    sleep (1);
     $start_timer_12 = microtime(true);
     $schema_name    = $row["schema_name"];
     $table_name     = $row["table_name"];
@@ -33,8 +38,7 @@ while ($row = pg_fetch_array($resulttotal)) {
     $mysqltbl = $schema_name . "." . $table_name;
     // $mysqltbl          = $schema_name . "_" . $table_name ;    
     
-    $ChunkSize = 1000000;
-    
+  
     # $output_file_name=$row["output_file_name"];
     # $stage_table_name=$row["stage_table_name"];
     # $rs_delete_qry=$row["rs_delete_qry"];
@@ -44,10 +48,10 @@ while ($row = pg_fetch_array($resulttotal)) {
     
     $query = "select count(1) ct from information_schema.processlist where user='pbpaul';";
     
-    $HowManyMySQLQueriesRunningThreshold = 5;
+
     $HowManyMySQLQueriesRunning          = $HowManyMySQLQueriesRunningThreshold + 1;
     while ($HowManyMySQLQueriesRunning > $HowManyMySQLQueriesRunningThreshold) {
-        echo "\n*******StartQuery mysqli_query\n" . $query . "\n*******EndQuery\n";
+       // echo "\n*******StartQuery mysqli_query\n" . $query . "\n*******EndQuery\n";
         if ($result = mysqli_query($link, $query)) {
             
             while ($row = mysqli_fetch_assoc($result)) {
@@ -59,7 +63,7 @@ while ($row = pg_fetch_array($resulttotal)) {
         
         echo "\nHowManyMySQLQueriesRunning: $HowManyMySQLQueriesRunning";
         if ($HowManyMySQLQueriesRunning > $HowManyMySQLQueriesRunningThreshold) {
-            echo "\nSleeping 30 Seconds...";
+            echo "\nSleeping 10 Seconds...";
             sleep(30);
         }
     }
@@ -99,7 +103,7 @@ while ($row = pg_fetch_array($resulttotal)) {
 
 
 
-
+print strftime('%c');
 
 
 ?>
