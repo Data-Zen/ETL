@@ -27,6 +27,15 @@ echo "\nmysqltbl:$mysqltbl\n";
 
 include('GetMySQLData2.php');
 echo "\n\nINSIDE RUNSCRIPT2: $mysqlaffectedrows MYSQL ROWS AFFECTED\n\n";
+if ($mysqlaffectedrows >=200) {
+
+$affectedrows=222;    
+}
+else
+{
+    $affectedrows=$mysqlaffectedrows;    
+}
+
 $end11 = round((microtime(true) - $start_timer_11), 2);
 echo "\n=====================elapsed time for Mysql: $end11 seconds \n";
 $start_timer_11 = microtime(true);
@@ -46,5 +55,5 @@ unlink($OutputFilePath);
         $end11 = round((microtime(true) - $start_timer_11),2);
         echo "\n=====================elapsed time for Loop: $end11 seconds \n";
 
-exit($mysqlaffectedrows);
+exit($affectedrows);
 ?>

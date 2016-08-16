@@ -29,7 +29,7 @@ if ($result = mysqli_query($link, $query)) {
         $output       = "";
         $return_value = "";
         exec($execstring, $output, $return_value);
-
+        usleep(200000);  // two tenth a second
       }
 }
 ?>
