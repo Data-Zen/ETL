@@ -17,7 +17,7 @@ join pg_namespace on pg_namespace.oid = relnamespace
 join pg_database on pg_database.oid = stv_tbl_perm.db_id
 where trim(nspname) ilike '%pupp%'
 and relname not ilike '%contact%'
-order by trim(nspname) ,rows ,trim(relname)
+order by trim(nspname) ,trim(relname),rows 
 ;";
 
 echo "\n*******StartQuery\n" . $sql . "\n*******EndQuery\n";
@@ -25,6 +25,7 @@ $resulttotal = pg_query($connect, $sql);
 
 while ($row = pg_fetch_array($resulttotal)) {
     
+$start_timer_12= microtime(true);
     $schema_name = $row["schema_name"];
     $table_name  = $row["table_name"];
     $rows        = $row["rows"];
@@ -54,7 +55,7 @@ while ($row = pg_fetch_array($resulttotal)) {
     $recordcount = 1;
     while ($recordcount > 0 and $i < 1000) // Actually used to end the loop
         {
-        
+        $start_timer_13= microtime(true);
         $execstring = "php runscript2.php " . $i * $ChunkSize . " $ChunkSize $mysqltbl ";
         echo "\n$execstring\n";
         $output       = "";
@@ -66,14 +67,20 @@ while ($row = pg_fetch_array($resulttotal)) {
         echo "\nReturnValue:$return_value\n";
         $recordcount = $return_value;
         $i           = $i + 1;
-        echo "\nCompleted loop iteration $i: $mysqltbl \n";
+        echo "\nCompleted loop iteration $i: $mysqltbl ";
         //usleep(500000);
+         $end13 = round((microtime(true) - $start_timer_13),2);
+        echo "***** Elapsed Time for Loop: $end13 s " . round($end13 /60,1) ." m \n";
         
     }
     /* Rename realtables to old tables and Dev Tables to real tables */
     $sql = "INSERT INTO dw_processes_history 
   select '$uid','$mysqltbl','end',getdate();";
 echo "\n*******StartQuery\n" . $sql . "\n*******EndQuery\n";
+
+        $end11 = round((microtime(true) - $start_timer_12),2);
+        echo "\n=============================== Elapsed Total Time for $mysqltbl: $end11 Seconds   " . round($end11 /60,1) ." Minutes =============================== \n";
+
 $result221 = pg_query($connect, $sql);
 }
 

@@ -17,7 +17,7 @@ if ($offset == 0) {
     echo "Rows affected $rowsaffected \n\n";
 }
 
-$sql = "copy $mysqltbl" . " from 's3://pbb-redshift/$mysqltbl.csv' CREDENTIALS 'aws_access_key_id=$AWS_ACCESS_KEY_ID;aws_secret_access_key=$AWS_SECRET_ACCESS_KEY' csv ;";
+$sql = "copy $mysqltbl" . " from 's3://pbb-redshift/$mysqltbl.csv' CREDENTIALS 'aws_access_key_id=$AWS_ACCESS_KEY_ID;aws_secret_access_key=$AWS_SECRET_ACCESS_KEY' csv gzip;";
 
 if ($debug == 1) {
     echo "\n*******StartQuery\n" . $sql . "\n*******EndQuery\n";

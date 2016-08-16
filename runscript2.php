@@ -41,5 +41,10 @@ $end11 = round((microtime(true) - $start_timer_11), 2);
 echo "\n=====================elapsed time for Redshift push: $end11 seconds \n";
 
 echo "\n\nINSIDE RUNSCRIPT2: $mysqlaffectedrows MYSQL ROWS AFFECTED\n\n";
+unlink($OutputFilePath);
+
+        $end11 = round((microtime(true) - $start_timer_11),2);
+        echo "\n=====================elapsed time for Loop: $end11 seconds \n";
+
 exit($mysqlaffectedrows);
 ?>

@@ -23,7 +23,7 @@ $link->set_charset("utf8");
         //$newArr = array();
         /* fetch associative array */
  $OutputFilePath='files/'.$mysqltbl.'.csv';
-$fp = fopen($OutputFilePath, 'w');
+$fp = fopen("compress.zlib://$OutputFilePath", 'w');
 echo "Starting Write to CSV \n";while($row = mysqli_fetch_assoc($result)) {
    // if ($i == 1) {
         // this is the header

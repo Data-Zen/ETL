@@ -12,7 +12,7 @@ if (isset($argv[1])) {
 if (isset($argv[2])) {
     $table=$argv[2];
 } else {
- echo '\n\n Database Needs to passed in.\n\n';
+ echo '\n\n Table Needs to passed in.\n\n';
  die;
 }
 
