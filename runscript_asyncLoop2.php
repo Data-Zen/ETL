@@ -22,44 +22,78 @@ order by trim(nspname) ,trim(relname),max(rows) ;";
 
 echo "\n*******StartQuery\n" . $sql . "\n*******EndQuery\n";
 $resulttotal = pg_query($connect, $sql);
-$i=1;
+$i           = 1;
 while ($row = pg_fetch_array($resulttotal)) {
     
-$start_timer_12= microtime(true);
-    $schema_name = $row["schema_name"];
-    $table_name  = $row["table_name"];
-    $rows        = $row["rws"];
+    $start_timer_12 = microtime(true);
+    $schema_name    = $row["schema_name"];
+    $table_name     = $row["table_name"];
+    $rows           = $row["rws"];
     
-    $mysqltbl          = $schema_name . "." . $table_name ;
-   // $mysqltbl          = $schema_name . "_" . $table_name ;    
-  
-    $ChunkSize         = 1000000;
+    $mysqltbl = $schema_name . "." . $table_name;
+    // $mysqltbl          = $schema_name . "_" . $table_name ;    
+    
+    $ChunkSize = 1000000;
     
     # $output_file_name=$row["output_file_name"];
     # $stage_table_name=$row["stage_table_name"];
     # $rs_delete_qry=$row["rs_delete_qry"];
     # $rs_insert_from_stage_qry=$row["rs_insert_from_stage_qry"];
     
-        $execstring = "php runscript_asyncLoop_guts.php $ChunkSize $mysqltbl > /dev/null 2>/dev/null &";
-        echo "\n$execstring\n";
-        $output       = "";
-        $return_value = "";
-        exec($execstring, $output, $return_value);
-
-        if ($i % 10 == 0) {
-            $execstring = "ps aux | grep php";
-        
-             $output       = "";
-            $return_value = "";
-            exec($execstring, $output, $return_value);
-        //var_dump($output) ;
-        //echo count($output);
-            $howmanystillrunning=count($output);
-            $sleeplength=$howmanystillrunning*10;
-          echo "\n\n Sleeping for $sleeplength seconds \n\n";
-          sleep($sleeplength);
+    $link = mysqli_connect($servername, $username, $password, $dbname);
+    
+    $query = "select count(1) ct from information_schema.processlist where user='pbpaul';";
+    
+    $HowManyMySQLQueriesRunningThreshold = 5;
+    $HowManyMySQLQueriesRunning          = $HowManyMySQLQueriesRunningThreshold + 1;
+    while ($HowManyMySQLQueriesRunning > $HowManyMySQLQueriesRunningThreshold) {
+        echo "\n*******StartQuery mysqli_query\n" . $query . "\n*******EndQuery\n";
+        if ($result = mysqli_query($link, $query)) {
+            
+            while ($row = mysqli_fetch_assoc($result)) {
+                //var_dump($row);
+                $HowManyMySQLQueriesRunning = $row["ct"];
+            }
         }
-    $i=$i+1;
+        
+        
+        echo "\nHowManyMySQLQueriesRunning: $HowManyMySQLQueriesRunning";
+        if ($HowManyMySQLQueriesRunning > $HowManyMySQLQueriesRunningThreshold) {
+            echo "\nSleeping 30 Seconds...";
+            sleep(30);
+        }
+    }
+    
+    
+    
+    $execstring = "php runscript_asyncLoop_guts.php $ChunkSize $mysqltbl > /dev/null 2>/dev/null &";
+    echo "\n$execstring\n";
+    $output       = "";
+    $return_value = "";
+    exec($execstring, $output, $return_value);
+    /*
+    if ($i % 20 == 0) {
+    $execstring = "ps aux | grep php";
+    
+    $output       = "";
+    $return_value = "";
+    exec($execstring, $output, $return_value);
+    //var_dump($output) ;
+    //echo count($output);
+    $howmanystillrunning=count($output);
+    $files = scandir("files/");
+    
+    // Count number of files and store them to variable..
+    $num_files = count($files)-3;
+    $howmanystillrunning=$howmanystillrunning+$num_files;
+    
+    
+    $sleeplength=$howmanystillrunning*5;
+    echo "\n\n Sleeping for $sleeplength seconds \n\n";
+    sleep($sleeplength);
+    */
+    
+    $i = $i + 1;
 }
 
 

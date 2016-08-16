@@ -1,13 +1,14 @@
 <?php
 
 
-        $execstring = "ps aux | grep php";
-        
-        $output       = "";
-        $return_value = "";
-        exec($execstring, $output, $return_value);
-        var_dump($output) ;
-        echo count($output);
+
+
+
+            $files = scandir("files/");
+
+            // Count number of files and store them to variable..
+            $num_files = count($files)-3;
+echo $num_files;
 
 ?>
 
