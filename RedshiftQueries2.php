@@ -20,7 +20,8 @@ if ($offset == 0) {
 $sql = "copy $mysqltbl" . " from 's3://pbb-redshift/$mysqltbl.csv' CREDENTIALS 'aws_access_key_id=$AWS_ACCESS_KEY_ID;aws_secret_access_key=$AWS_SECRET_ACCESS_KEY'  csv quote as '%'  GZIP
   ACCEPTANYDATE
   TRUNCATECOLUMNS
-  ACCEPTINVCHARS ;";
+  ACCEPTINVCHARS 
+  COMPUPDATE ON;";
 
 if ($debug == 1) {
     echo "\n*******StartQuery\n" . $sql . "\n*******EndQuery\n";
