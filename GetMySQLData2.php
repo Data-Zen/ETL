@@ -25,7 +25,8 @@ echo "Starting Write to CSV \n";while($row = mysqli_fetch_assoc($result)) {
     // this is the customer/order data
   //$row=str_replace('"', '""', $row);
   //$row = preg_replace($regex, '$1', $row);
-  $row =preg_replace('/[^a-zA-Z0-9_ %\[\]\.\(\)%&-]/s', '', $row);
+  //$row =preg_replace('/[^a-zA-Z0-9_ %\[\]\.\(\)%&-]/s', '', $row);
+  $row =preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $row);
     fputcsv($fp, $row,",","%");
 }
 echo "Export Completed \n";

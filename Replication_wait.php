@@ -1,11 +1,11 @@
 <?php
-$SecondsAllowed=2000;
+$SecondsAllowed=300;
 include 'credentials/PBBCredentials.php';
 //$connect = pg_connect($PBBModifyCredentials);
 
 
 $db = new PDO('mysql:host='.$servername, $username, $password);
-echo "\nStarting Replication Delay check... \n ";
+echo "\nStarting Replication Delay check...\n";
 
 
 $sql = 'show slave status';
@@ -25,7 +25,7 @@ while ($Seconds_Behind_Master >= $SecondsAllowed ) {
               }
               else
               {
-                echo "Replication all caught up!";
+                echo "Replication all caught up! $Seconds_Behind_Master seconds behind master.";
 
               }
 
