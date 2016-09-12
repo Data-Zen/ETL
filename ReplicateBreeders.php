@@ -31,10 +31,39 @@ while ($row = pg_fetch_array($resulttotal)) {
     $breader_status_id= $row["breader_status_id"];
     $lastmodified_dt= $row["lastmodified_dt"];
 
-        $sql="insert into buypuppy_test.geodesic_userdata (id,company_name) values ($id,'".addslashes($company_name)."')";
+        $sql="select 1 as resultid from buypuppy_test.geodesic_userdata where id=$id";
+            echo "\n*******StartQuery\n" . $sql . "\n*******EndQuery\n";
+            $result = pg_query($connect, $sql);
+            if (pg_num_rows($result) > 0 ){
+
+                $sql="update buypuppy_test.geodesic_userdata set id=$id,company_name='".addslashes($company_name)."' where id=$id";
+
+            }
+            else
+            {
+                $sql="insert into buypuppy_test.geodesic_userdata (id,company_name) values ($id,'".addslashes($company_name)."')";
+            }
+        
+
         echo "\n*******StartQuery\n" . $sql . "\n*******EndQuery\n";
         $result = pg_query($connect, $sql);
-        $sql="insert into buypuppy_test.geodesic_logins (id,status) values ($id,$breader_status_id)";
+
+
+
+        $sql="select 1 as resultid from buypuppy_test.geodesic_logins where id=$id";
+            echo "\n*******StartQuery\n" . $sql . "\n*******EndQuery\n";
+            $result = pg_query($connect, $sql);
+            if (pg_num_rows($result) > 0 ){
+
+                $sql="update buypuppy_test.geodesic_logins set id=$id,status=$breader_status_id where id=$id";
+
+            }
+            else
+            {
+                $sql="insert into buypuppy_test.geodesic_logins (id,status) values ($id,$breader_status_id)";
+            }
+        
+
         echo "\n*******StartQuery\n" . $sql . "\n*******EndQuery\n";
         $result = pg_query($connect, $sql);
         $rowsaffected = pg_affected_rows($result);
